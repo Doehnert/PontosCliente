@@ -60,6 +60,7 @@ class InstallData implements InstallDataInterface
             'user_defined' => true,
             'position' =>999,
             'system' => 0,
+            'default' => '0',
         ]);
 
         $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'pontos_cliente')
