@@ -3,23 +3,21 @@
 namespace Vexpro\PontosCliente\Setup;
 
 use Magento\Customer\Setup\CustomerSetupFactory;
-use Magento\Customer\Model\Customer;
-use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
-use Magento\Eav\Model\Entity\Attribute\SetFactory as AttributeSetFactory;
-use Magento\Framework\Setup\InstallDataInterface;
+use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Framework\Setup\UpgradeDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Magento\Customer\Model\Customer;
+use Magento\Eav\Model\Entity\Attribute\SetFactory as AttributeSetFactory;
 
 /**
  * @codeCoverageIgnore
  */
-class InstallData implements InstallDataInterface
-{
+class UpgradeData implements UpgradeDataInterface
 
-    /**
-     * @var CustomerSetupFactory
-     */
-    protected $customerSetupFactory;
+{
+    private $eavSetupFactory;
 
     /**
      * @var AttributeSetFactory
@@ -27,21 +25,25 @@ class InstallData implements InstallDataInterface
     private $attributeSetFactory;
 
     /**
-     * @param CustomerSetupFactory $customerSetupFactory
-     * @param AttributeSetFactory $attributeSetFactory
+     * @var CustomerSetupFactory
      */
+    protected $customerSetupFactory;
+
     public function __construct(
+        EavSetupFactory $eavSetupFactory,
         CustomerSetupFactory $customerSetupFactory,
         AttributeSetFactory $attributeSetFactory
     ) {
+        $this->eavSetupFactory = $eavSetupFactory;
         $this->customerSetupFactory = $customerSetupFactory;
         $this->attributeSetFactory = $attributeSetFactory;
     }
 
-
-    public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    /**
+     * {@inheritdoc}
+     */
+    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-
         /** @var CustomerSetup $customerSetup */
         $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
 
